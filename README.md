@@ -2,12 +2,13 @@
 
 [![Build Status](https://travis-ci.org/zcash/zcash-ios-wallet.svg?branch=master)](https://travis-ci.org/zcash/zcash-ios-wallet)
 
-## Motivation
+
+# Motivation
 Dogfooding - _transitive verb_ - is the practice of an organization using its own product. This app was created to help us learn.
 
 Please take note: the wallet is not an official product by ECC, but rather a tool for learning about our libraries that it is built on. This means that we do not have robust infrastructure or user support for this application. We open sourced it as a resource to make wallet development easier for the Zcash ecosystem.
 
-## Disclaimers
+# Disclaimers
 There are some known areas for improvement:
 
 - This app is mainly intended for learning and improving the related libraries that it uses. There may be bugs.
@@ -19,8 +20,7 @@ for more information about the security and privacy limitations of the wallet.
 
 If you'd like to sign up to help us test, reach out on discord and let us know! We're always happy to get feedback!
 
-
-## Description
+# Description
 
 iOS wallet using the Zcash iOS SDK that is maintained by core developers.
 
@@ -32,7 +32,7 @@ This a reference wallet for the following set of features:
 - autoshielding on threshold from receive only t-address
 
 note: z means sapling shielded addresses.
-## Prerequisites
+# Prerequisites
 * make sure you can build ZcashLightClientKit Demo Apps successfully
 
 # Building the App
@@ -50,24 +50,24 @@ note: z means sapling shielded addresses.
 
 7. build and run on simulator.
 
-
-## Enabling/Disabling Logging Features
+If you had problems in any of these steps please check the [troubleshooting document](/TROUBLESHOOTING.md)
+# Enabling/Disabling logging Features
 
 This is our internal dogfooding app, and we implemented some level of event logging to be able to study user interactions and improve the User Experience with Zcash on mobile devices.
 
-### No Logs please
+## No logs please
 
 *You can build and run the app **without it** by using the `wallet-no-logging`*
 
 The "no logging" target does not even build or include the Mixpanel sdk on your build or any code related with it. You can make sure of this by looking at the code yourself. If you think there's a better way achieve this, please open an Issue with your proposal. :-) 
 
-### I want to use Mixpanel
+## I want to use Mixpanel
 
 If you wish to use mixpanel in your own build, make sure to include the following line in your env-vars.sh file
 `export MIXPANEL_TOKEN="YOUR_TOKEN"`
 And build the `wallet` target. Sourcery will pick it up and generate the Constants.generated.swift file that the Mixpanel SDK will use to send the events to your board
 
-### I use some other kind of tracker...
+## I use some other kind of tracker...
 that I would like to include in my project. The app does not care about the details of the event logger as long as it implements this protocol
 ````Swift
 protocol EventLogging {
@@ -76,20 +76,6 @@ protocol EventLogging {
 ````
 
 You can implement your own tracker proxy
-## Troubleshooting
-
-### No network environment....
-if you see this message when building:
-```No network environment. Set ZCASH_NETWORK_ENVIRONMENT to MAINNET or TESTNET```
-make sure your dev environment has this variable set before the build starts. *DO NOT CHANGE IT DURING THE BUILD PROCESS*.
-
-If the variable was properly set *after* you've seen this message, you will need to either a) set it manually on the pod's target or b) doing a clean pod install and subsequent build.
-
-#### a) setting the flag manually
-1. on your workspace, select the Pods project
-2. on the Targets pane, select ZcashLightClientKit
-3. go to build settings
-4. scroll down to see ZCASH_NETWORK_ENVIRONMENT and complete with TESTNET or MAINNET
 
 # Contributing
 
