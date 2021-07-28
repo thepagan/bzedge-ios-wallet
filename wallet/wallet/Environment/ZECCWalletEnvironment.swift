@@ -111,7 +111,7 @@ final class ZECCWalletEnvironment: ObservableObject {
         do {
             let randomPhrase = try MnemonicSeedProvider.default.randomMnemonic()
             
-            let birthday = WalletBirthday.birthday(with: BlockHeight.max)
+            let birthday = WalletBirthday.birthday(with: BlockHeight.max, network: ZCASH_NETWORK)
             
             try SeedManager.default.importBirthday(birthday.height)
             try SeedManager.default.importPhrase(bip39: randomPhrase)
@@ -125,13 +125,14 @@ final class ZECCWalletEnvironment: ObservableObject {
     func initialize() throws {
         let seedPhrase = try SeedManager.default.exportPhrase()
         let seedBytes = try MnemonicSeedProvider.default.toSeed(mnemonic: seedPhrase)
-        let viewingKeys = try DerivationTool.default.deriveUnifiedViewingKeysFromSeed(seedBytes, numberOfAccounts: 1)
+        let viewingKeys = try DerivationTool(networkType: ZCASH_NETWORK.networkType).deriveUnifiedViewingKeysFromSeed(seedBytes, numberOfAccounts: 1)
         
         let initializer = Initializer(
             cacheDbURL: self.cacheDbURL,
             dataDbURL: self.dataDbURL,
             pendingDbURL: self.pendingDbURL,
             endpoint: endpoint,
+            network: ZCASH_NETWORK,
             spendParamsURL: self.spendParamsURL,
             outputParamsURL: self.outputParamsURL,
             viewingKeys: viewingKeys,
@@ -417,11 +418,11 @@ extension ZECCWalletEnvironment {
     }
     
     private func sufficientFunds(availableBalance: Int64, zatoshiToSend: Int64) -> Bool {
-        availableBalance - zatoshiToSend  - Int64(ZcashSDK.defaultFee()) >= 0
+        availableBalance - zatoshiToSend  - Int64(ZCASH_NETWORK.constants.defaultFee()) >= 0
     }
     
     static var minerFee: Double {
-        Int64(ZcashSDK.defaultFee()).asHumanReadableZecBalance()
+        Int64(ZCASH_NETWORK.constants.defaultFee()).asHumanReadableZecBalance()
     }
     
     func credentialsAlreadyPresent() -> Bool {
@@ -559,3 +560,15 @@ extension ZECCWalletEnvironment {
     }
 }
 #endif
+
+
+extension ZcashSDK {
+    static var isMainnet: Bool {
+        switch ZCASH_NETWORK.networkType {
+        case .mainnet:
+            return true
+        case .testnet:
+            return false
+        }
+    }
+}

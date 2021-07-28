@@ -13,14 +13,21 @@ extension String {
     /**
      network aware ZEC string. When on mainnet it will read ZEC and TAZ when on Testnet
      */
-    static let ZEC = ZcashSDK.isMainnet ? "ZEC" : "TAZ"
+    static var ZEC: String {
+        switch ZCASH_NETWORK.networkType {
+        case .mainnet:
+            return "ZEC"
+        case .testnet:
+            return "TAZ"
+        }
+    }
     
     var isValidShieldedAddress: Bool {
-        (try? DerivationTool.default.isValidShieldedAddress(self)) ?? false
+        (try? DerivationTool(networkType: ZCASH_NETWORK.networkType).isValidShieldedAddress(self)) ?? false
     }
     
     var isValidTransparentAddress: Bool {
-        (try? DerivationTool.default.isValidTransparentAddress(self)) ?? false
+        (try? DerivationTool(networkType: ZCASH_NETWORK.networkType).isValidTransparentAddress(self)) ?? false
     }
     
     var isValidAddress: Bool {

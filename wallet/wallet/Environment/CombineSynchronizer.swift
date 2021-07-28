@@ -105,7 +105,7 @@ class CombineSynchronizer {
         let transparentSubject = CurrentValueSubject<WalletBalance, Never>(Balance(verified: 0, total: 0))
         self.transparentBalance = transparentSubject
         self.verifiedBalance = CurrentValueSubject(0)
-        self.syncBlockHeight = CurrentValueSubject(ZcashSDK.SAPLING_ACTIVATION_HEIGHT)
+        self.syncBlockHeight = CurrentValueSubject(ZCASH_NETWORK.constants.SAPLING_ACTIVATION_HEIGHT)
         self.connectionState = CurrentValueSubject(self.synchronizer.connectionState)
         
         // Subscribe to SDKSynchronizer notifications
@@ -236,7 +236,7 @@ class CombineSynchronizer {
             throw SynchronizerError.initFailed(message: "unable to derive unified address. this is probably a programming error")
         }
         do {
-            self.unifiedAddress = try DerivationTool.default.deriveUnifiedAddressFromUnifiedViewingKey(uvk)
+            self.unifiedAddress = try DerivationTool(networkType: ZCASH_NETWORK.networkType).deriveUnifiedAddressFromUnifiedViewingKey(uvk)
         } catch {
             throw SynchronizerError.initFailed(message: "unable to derive unified address: \(error.localizedDescription)")
         }
@@ -340,7 +340,7 @@ class CombineSynchronizer {
             
             guard let self = self else { return }
             
-            let walletBirthday = (try? SeedManager.default.exportBirthday()) ?? ZcashSDK.SAPLING_ACTIVATION_HEIGHT
+            let walletBirthday = (try? SeedManager.default.exportBirthday()) ?? ZCASH_NETWORK.constants.SAPLING_ACTIVATION_HEIGHT
             
             self.synchronizer.refreshUTXOs(address: tAddress, from: walletBirthday, result: { [weak self] (r) in
                 guard let self = self else { return }
