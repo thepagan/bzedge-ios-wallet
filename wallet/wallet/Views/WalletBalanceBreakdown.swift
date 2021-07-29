@@ -73,7 +73,7 @@ final class WalletBalanceBreakdownViewModel: ObservableObject {
     var isShieldingButtonEnabled: Bool {
         switch status {
         case .idle:
-            return transparentBalance.verified >= ZcashSDK.shieldingThreshold.asHumanReadableZecBalance()
+            return transparentBalance.verified >= ZECCWalletEnvironment.autoShieldingThresholdInZatoshi.asHumanReadableZecBalance()
         default:
             return false
         }

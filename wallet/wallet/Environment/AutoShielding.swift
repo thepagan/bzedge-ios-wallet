@@ -176,7 +176,7 @@ class AutoShieldingBuilder {
         
         return ConcreteAutoShielder(autoShielding: ManualShielding(),
                                     keyProviding: keyProvider,
-                                    keyDeriver: DerivationTool.default,
+                                    keyDeriver: DerivationTool(networkType: ZCASH_NETWORK.networkType),
                                     shielder: shielder)
     }
     
@@ -190,7 +190,7 @@ class AutoShieldingBuilder {
                                                         threshold: threshold,
                                                         tBalance: balanceProviding),
             keyProviding: keyProvider,
-            keyDeriver: DerivationTool.default,
+            keyDeriver: DerivationTool(networkType: ZCASH_NETWORK.networkType),
             shielder: shielder)
     }
 }
@@ -199,7 +199,7 @@ extension SDKSynchronizer: ShieldingCapable {}
 
 class DefaultShieldingKeyProvider: ShieldingKeyProviding {
     func getTransparentSecretKey() throws -> PrivateKeyAccountIndexPair {
-        let derivationTool = DerivationTool.default
+        let derivationTool = DerivationTool(networkType: ZCASH_NETWORK.networkType)
         let s = try SeedManager.default.exportPhrase()
         let seed = try MnemonicSeedProvider.default.toSeed(mnemonic: s)
         let tsk = try derivationTool.deriveTransparentPrivateKey(seed: seed)
@@ -207,7 +207,7 @@ class DefaultShieldingKeyProvider: ShieldingKeyProviding {
     }
     
     func getSpendingKey() throws -> PrivateKeyAccountIndexPair {
-        let derivationTool = DerivationTool.default
+        let derivationTool = DerivationTool(networkType: ZCASH_NETWORK.networkType)
         let s = try SeedManager.default.exportPhrase()
         let seed = try MnemonicSeedProvider.default.toSeed(mnemonic: s)
         let keys = try derivationTool.deriveSpendingKeys(seed: seed, numberOfAccounts: 1)
