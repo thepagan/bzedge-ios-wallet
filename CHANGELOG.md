@@ -1,4 +1,11 @@
 # Changelog
+
+## 0.5.0 build 125
+* Issue #293 Crash when browsing Wallet History and sync happens
+
+## 0.5.0 build 124
+* [Enhancement] Remove the need for ZCASH_NETWORK_ENVIRONMENT env var. Use targets instead
+* bump to 0.12.0-beta.2
 ## 0.5.0 build 123
 * Fix: Issue #286 Force the app to be awake while syncing
 ## 0.5.0 build 122
