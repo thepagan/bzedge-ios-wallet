@@ -429,8 +429,8 @@ struct Home: View {
             
             NavigationLink(
                 destination:
-                    LazyView(WalletDetails(isActive: self.$viewModel.showHistory)
-                                .environmentObject(WalletDetailsViewModel())
+                    LazyView(WalletDetails(viewModel: WalletDetailsViewModel(),
+                                           isActive: self.$viewModel.showHistory)
                                 .navigationBarTitle(Text(""), displayMode: .inline)
                                 .navigationBarHidden(true)),
                 tag: HomeViewModel.PushDestination.history,

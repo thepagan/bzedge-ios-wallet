@@ -58,12 +58,12 @@ class WalletDetailsViewModel: ObservableObject {
     }
     
     var zAddress: String {
-        ZECCWalletEnvironment.shared.getShieldedAddress() ?? ""
+        ZECCWalletEnvironment.shared.shieldingAddress
     }
 }
 
 struct WalletDetails: View {
-    @EnvironmentObject var viewModel: WalletDetailsViewModel
+    @StateObject var viewModel: WalletDetailsViewModel
     @Environment(\.walletEnvironment) var appEnvironment: ZECCWalletEnvironment
     @Environment(\.presentationMode) var presentationMode
     @Binding var isActive: Bool
@@ -160,7 +160,7 @@ struct WalletDetails: View {
 
 struct WalletDetails_Previews: PreviewProvider {
     static var previews: some View {
-        return WalletDetails(isActive: .constant(true)).environmentObject(ZECCWalletEnvironment.shared)
+        return WalletDetails(viewModel: WalletDetailsViewModel(), isActive: .constant(true))
     }
 }
 
